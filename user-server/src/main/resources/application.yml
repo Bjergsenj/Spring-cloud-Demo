@@ -9,4 +9,4 @@ spring:
     name: user-service
 feign:
   hystrix:
-    enabled: true # ¿ªÆôFeignÈÛ¶Ï
+    enabled: true
