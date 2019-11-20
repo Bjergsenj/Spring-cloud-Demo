@@ -1,0 +1,26 @@
+server:
+  port: 9000
+
+#指定注册中心地址
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+#服务的名称
+spring:
+  application:
+    name: zuul-service
+
+#自定义路由映射
+zuul:
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+  routes:
+    user-route:
+      path: /user-server/**
+      serviceId: user-service
+    client-route:
+      path: /client-server/**
+      serviceId: client-service
