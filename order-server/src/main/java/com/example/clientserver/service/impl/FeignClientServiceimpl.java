@@ -5,8 +5,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class FeignClientServiceimpl  implements FeignClientService {
+
     @Override
-    public String add(String userId) {
+    public String cairdan() {
         return "Hystrix fallback ...";
     }
 }

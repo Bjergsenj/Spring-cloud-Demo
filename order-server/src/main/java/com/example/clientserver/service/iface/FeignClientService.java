@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(value = "user-service",fallback = FeignClientServiceimpl.class)
 public interface FeignClientService {
 
-    @RequestMapping(value = "/test",method = RequestMethod.GET)
-    String add(@RequestParam(value = "userId") String userId);
+
+    @RequestMapping(value = "/caidan",method = RequestMethod.GET)
+    String cairdan();
 }

@@ -1,12 +1,49 @@
 package com.example.userserver.service.impl;
 
+import com.example.userserver.mapper.CaidanMapper;
+import com.example.userserver.model.Caidan;
+import com.example.userserver.model.CaidanExample;
 import com.example.userserver.service.iface.FeignClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
 public class FeignClientServiceimpl  implements FeignClientService {
+
+    @Autowired
+    private CaidanMapper caidanMapper;
+
+
     @Override
-    public String add(String userId, String userName) {
-        return "Hystrix fallback ...";
+    public List<Caidan> all() {
+        CaidanExample caidanExample = new CaidanExample();
+        List<Caidan> caidans = caidanMapper.selectByExample(caidanExample);
+        List<Caidan> deptTree = getChildrenTree(caidans, "0");
+        return deptTree;
+    }
+
+
+    private List<Caidan> getChildrenTree(List<Caidan> all,String pid){
+        List<Caidan> result =  new ArrayList<Caidan>();
+        List<Caidan> children =  new ArrayList<Caidan>();
+        for(Caidan caidan : all){
+            if(caidan.getParentId().equals(pid)){
+                Caidan deptScopeMode = new Caidan();
+                deptScopeMode.setId(caidan.getId());
+                deptScopeMode.setName(caidan.getName());
+                deptScopeMode.setParentId(caidan.getParentId());
+                children = getChildrenTree(all,caidan.getId());
+                if(children.size() > 0){
+                    deptScopeMode.setChildren(children);
+                }
+                result.add(deptScopeMode);
+            }
+        }
+        return result;
+
     }
 }
