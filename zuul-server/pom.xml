@@ -51,7 +51,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+    <!--提交测试-->
     <build>
         <plugins>
             <plugin>
