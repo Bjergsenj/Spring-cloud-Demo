@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: user-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server  # 注册中心的服务名
+      profile: dev  # 指定配置文件的环境
+      label: master #git分支
