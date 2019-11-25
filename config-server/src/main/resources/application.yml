@@ -14,6 +14,6 @@ spring:
         git:
 #          searchPaths: user,order
           searchPaths: /**
-          uri: https://github.com/Bjergsenj/SpringCloud-Config/
+          uri: https://github.com/Bjergsenj/SpringCloud-Config
 server:
   port: 8888
