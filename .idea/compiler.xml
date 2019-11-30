@@ -7,12 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="eureka-server" />
+        <module name="user-server" />
         <module name="config-server" />
         <module name="zuul-server" />
         <module name="Spring cloud demo" />
         <module name="order-server" />
         <module name="gateway-server" />
-        <module name="user-server" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

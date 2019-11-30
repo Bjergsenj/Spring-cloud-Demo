@@ -33,10 +33,10 @@ spring:
           - StripPrefix=1
           - name: RequestRateLimiter
             args:
-              #ÓÃÓÚÏŞÁ÷µÄ¼üµÄ½âÎöÆ÷µÄ Bean ¶ÔÏóµÄÃû×Ö,Ê¹ÓÃ SpEL ±í´ïÊ½¸ù¾İ#{@beanName}»ñÈ¡Bean¶ÔÏó
+              #ç”¨äºé™æµçš„é”®çš„è§£æå™¨çš„ Bean å¯¹è±¡çš„åå­—,ä½¿ç”¨ SpEL è¡¨è¾¾å¼æ ¹æ®#{@beanName}è·å–Beanå¯¹è±¡
               key-resolver: '#{@remoteAddrKeyResolver}'
-              # Ã¿Ãë×î´ó·ÃÎÊ´ÎÊı
+              # æ¯ç§’æœ€å¤§è®¿é—®æ¬¡æ•°
               redis-rate-limiter.replenishRate: 1
-              #ÁîÅÆÍ°×ÜÈİÁ¿
+              #ä»¤ç‰Œæ¡¶æ€»å®¹é‡
               redis-rate-limiter.burstCapacity: 3
 
