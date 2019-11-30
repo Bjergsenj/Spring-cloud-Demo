@@ -24,6 +24,7 @@
         <module>order-server</module>
         <module>user-server</module>
         <module>zuul-server</module>
+        <module>gateway-server</module>
     </modules>
     <dependencies>
         <dependency>

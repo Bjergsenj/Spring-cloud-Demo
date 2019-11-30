@@ -1,0 +1,42 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 9000
+feign:
+  hystrix:
+    enabled: true
+spring:
+  application:
+    name: gateway-service
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    #password: 123456
+    database: 0
+  cloud:
+    gateway:
+      routes:
+        - id: user_route
+#          uri: https://baidu.com
+          uri: lb://user-service
+          predicates:
+            - Path=/user-server/**
+          filters:
+            - StripPrefix=1
+        - id: order_route
+          uri: lb://order-service
+          predicates:
+            - Path=/order-server/**
+          filters:
+          - StripPrefix=1
+          - name: RequestRateLimiter
+            args:
+              #用于限流的键的解析器的 Bean 对象的名字,使用 SpEL 表达式根据#{@beanName}获取Bean对象
+              key-resolver: '#{@remoteAddrKeyResolver}'
+              # 每秒最大访问次数
+              redis-rate-limiter.replenishRate: 1
+              #令牌桶总容量
+              redis-rate-limiter.burstCapacity: 3
+

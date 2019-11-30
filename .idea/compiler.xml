@@ -11,6 +11,7 @@
         <module name="zuul-server" />
         <module name="Spring cloud demo" />
         <module name="order-server" />
+        <module name="gateway-server" />
         <module name="user-server" />
       </profile>
     </annotationProcessing>
@@ -24,6 +25,7 @@
       <module name="client-server" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="gateway-server" options="-parameters" />
       <module name="order-server" options="-parameters" />
       <module name="user-server" options="-parameters" />
       <module name="zuul-server" options="-parameters" />
