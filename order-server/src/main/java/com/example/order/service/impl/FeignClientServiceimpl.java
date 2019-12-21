@@ -1,6 +1,6 @@
-package com.example.clientserver.service.impl;
+package com.example.order.service.impl;
 
-import com.example.clientserver.service.iface.FeignClientService;
+import com.example.order.service.iface.FeignClientService;
 import org.springframework.stereotype.Component;
 
 @Component

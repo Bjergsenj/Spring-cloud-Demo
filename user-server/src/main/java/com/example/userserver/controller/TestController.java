@@ -1,30 +1,46 @@
 package com.example.userserver.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.userserver.model.AddressModel;
 import com.example.userserver.model.Caidan;
 import com.example.userserver.service.iface.FeignClientService;
+import com.example.userserver.utils.GdUtil;
+import com.example.userserver.utils.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@RestController
 /**
  * 服务提供者
  */
+@RestController
 public class TestController {
 
 
     @Autowired
     private FeignClientService feignClientService;
 
-    @RequestMapping(value = "/caidan",method = RequestMethod.GET)
-    public List<Caidan> caidan(){
+    @RequestMapping(value = "/caidan", method = RequestMethod.GET)
+    public List<Caidan> caidan() {
         return feignClientService.all();
     }
 
+    @RequestMapping(value = "/address", method = RequestMethod.GET)
+    @ResponseBody
+    public AddressModel address(HttpServletRequest request) {
+        String ipAddress = RequestUtils.getIpAddress(request);
+        JSONObject s = GdUtil.getAll(ipAddress);
+        System.out.println(s.toJSONString());                             //330100
+        JSONObject rectangle = GdUtil.coordinateConvert(s.getString("rectangle"));
+        System.out.println(rectangle.toJSONString());
+        JSONObject regeocode = rectangle.getJSONObject("regeocode");
+        String string = regeocode != null ? regeocode.getString("formatted_address") : "定位失败";
+        return new AddressModel(ipAddress, string);
+    }
 
 }
