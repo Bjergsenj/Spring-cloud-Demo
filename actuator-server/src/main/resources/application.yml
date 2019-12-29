@@ -1,0 +1,9 @@
+server:
+  port: 8679
+spring:
+  application:
+    name: SpringBootAdmin
+  boot:
+    admin:
+      ui:
+        title: SpringBootAdmin-Server
