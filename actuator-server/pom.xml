@@ -11,7 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>actuator-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>oauth-server</name>
+    <name>actuator-server</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

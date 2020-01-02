@@ -25,6 +25,7 @@
         <module>user-server</module>
         <module>zuul-server</module>
         <module>gateway-server</module>
+        <module>actuator-server</module>
     </modules>
     <dependencies>
         <dependency>
