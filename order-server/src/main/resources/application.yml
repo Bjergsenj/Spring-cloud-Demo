@@ -35,6 +35,6 @@ management:
 
 # info信息会显示到SpringBootAdmin的server端，这里取的是pom文件中的数据
 info:
-  version: @project.version@
-  groupId: @project.groupId@
-  artifactId: @project.artifactId@
+  version: "@project.version@"
+  groupId: "@project.groupId@"
+  artifactId: "@project.artifactId@"
