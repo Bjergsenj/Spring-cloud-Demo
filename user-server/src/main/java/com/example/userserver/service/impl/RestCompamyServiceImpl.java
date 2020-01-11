@@ -94,11 +94,11 @@ public class RestCompamyServiceImpl implements RestCompamyService {
         IndexRequest indexRequest6 = new IndexRequest("paic", "company", "6").source(map6);
         highLevelClient.index(indexRequest6, RequestOptions.DEFAULT);
         Map map7 = Maps.newHashMap();
-        map6.put("companyid", 7);
-        map6.put("companyName", "haolaiwu");
-        map6.put("companyInfo", "haolaiwuhahahah");
-        map6.put("order", 7);
-        IndexRequest indexRequest7 = new IndexRequest("paic", "company", "6").source(map7);
+        map7.put("companyid", 7);
+        map7.put("companyName", "haolaiwu");
+        map7.put("companyInfo", "haolaiwuhahahah");
+        map7.put("order", 7);
+        IndexRequest indexRequest7 = new IndexRequest("paic", "company", "7").source(map7);
         highLevelClient.index(indexRequest7, RequestOptions.DEFAULT);
     }
 
