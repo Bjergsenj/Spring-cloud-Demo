@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -34,8 +35,10 @@ import java.util.Map;
 @Service
 @Slf4j
 public class RestCompamyServiceImpl implements RestCompamyService {
+
     @Autowired
-    RestHighLevelClient highLevelClient;
+    private RestHighLevelClient highLevelClient;
+
     @Override
     public void add() throws IOException {
         Map map = Maps.newHashMap();
@@ -73,26 +76,39 @@ public class RestCompamyServiceImpl implements RestCompamyService {
         map6.put("companyName", "百度");
         map6.put("companyInfo", "国内知名搜索公司");
         map6.put("order", 5);
+
+        /**
+         * 数据index为paic, index等于关系型数据库中的库
+         * type为company ,7.0之后统一为_doc 只能设置一个type ,7.0之前版本等同于关系型数据库中的table
+         */
         IndexRequest indexRequest = new IndexRequest("paic", "company", "1").source(map);
-        highLevelClient.index(indexRequest);
+        highLevelClient.index(indexRequest, RequestOptions.DEFAULT);
         IndexRequest indexRequest2 = new IndexRequest("paic", "company", "2").source(map2);
-        highLevelClient.index(indexRequest2);
+        highLevelClient.index(indexRequest2, RequestOptions.DEFAULT);
         IndexRequest indexRequest3 = new IndexRequest("paic", "company", "3").source(map3);
-        highLevelClient.index(indexRequest3);
+        highLevelClient.index(indexRequest3, RequestOptions.DEFAULT);
         IndexRequest indexRequest4 = new IndexRequest("paic", "company", "4").source(map4);
-        highLevelClient.index(indexRequest4);
+        highLevelClient.index(indexRequest4, RequestOptions.DEFAULT);
         IndexRequest indexRequest5 = new IndexRequest("paic", "company", "5").source(map5);
-        highLevelClient.index(indexRequest5);
+        highLevelClient.index(indexRequest5, RequestOptions.DEFAULT);
         IndexRequest indexRequest6 = new IndexRequest("paic", "company", "6").source(map6);
-        highLevelClient.index(indexRequest6);
+        highLevelClient.index(indexRequest6, RequestOptions.DEFAULT);
+        Map map7 = Maps.newHashMap();
+        map6.put("companyid", 7);
+        map6.put("companyName", "haolaiwu");
+        map6.put("companyInfo", "haolaiwuhahahah");
+        map6.put("order", 7);
+        IndexRequest indexRequest7 = new IndexRequest("paic", "company", "6").source(map7);
+        highLevelClient.index(indexRequest7, RequestOptions.DEFAULT);
     }
 
     @Override
     public Object searchByQuery() {
         SearchRequest searchRequest = new SearchRequest("paic");
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-
+        //companyInfo字段如果加上.keyword则为精确查询，否则为模糊查询
         MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("companyInfo", "电商");
+        //Term query会去倒排索引中寻找确切的term，它并不知道分词器的存在，这种查询适合keyword、numeric、date等明确值的
         //        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("companyInfo.keyword", "电商");
         BoolQueryBuilder boolBuilder = QueryBuilders.boolQuery();
         boolBuilder.must(matchQueryBuilder);
@@ -118,7 +134,8 @@ public class RestCompamyServiceImpl implements RestCompamyService {
         searchRequest.source(sourceBuilder);
         List<Map<String, Object>> result = Lists.newLinkedList();
         try {
-            SearchResponse response = highLevelClient.search(searchRequest);
+            SearchResponse response = highLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            System.out.println(response);
             SearchHit[] searchHits = response.getHits().getHits();
             if (searchHits != null && searchHits.length > 0) {
                 for (SearchHit searchHit : searchHits) {
