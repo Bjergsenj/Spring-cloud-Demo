@@ -17,6 +17,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,7 +123,8 @@ public class RestCompamyServiceImpl implements RestCompamyService {
         FieldSortBuilder fsb = SortBuilders.fieldSort("order");
         fsb.order(SortOrder.DESC);
         sourceBuilder.sort(fsb);
-
+        //must搜索打分
+        sourceBuilder.sort(new ScoreSortBuilder().order(SortOrder.DESC));
         //构建高亮体
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         highlightBuilder.preTags("<span style='color:red'>");
