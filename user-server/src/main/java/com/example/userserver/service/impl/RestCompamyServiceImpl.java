@@ -1,5 +1,7 @@
 package com.example.userserver.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.userserver.model.CompanyInfo;
 import com.example.userserver.service.iface.RestCompamyService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -9,6 +11,7 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -24,8 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * description: TODO
@@ -43,37 +48,37 @@ public class RestCompamyServiceImpl implements RestCompamyService {
     @Override
     public void add() throws IOException {
         Map map = Maps.newHashMap();
-        map.put("companyid", 1);
+        map.put("companyId", 1);
         map.put("companyName", "阿里巴巴");
         map.put("companyInfo", "国内著名电商公司");
         map.put("order", 3);
 
         Map map2 = Maps.newHashMap();
-        map2.put("companyid", 2);
+        map2.put("companyId", 2);
         map2.put("companyName", "京东");
         map2.put("companyInfo", "国内知名电商公司");
         map2.put("order", 2);
 
         Map map3 = Maps.newHashMap();
-        map3.put("companyid", 3);
+        map3.put("companyId", 3);
         map3.put("companyName", "亚马逊");
         map3.put("companyInfo", "国外著名电商公司");
         map3.put("order", 1);
 
         Map map4 = Maps.newHashMap();
-        map4.put("companyid", 4);
+        map4.put("companyId", 4);
         map4.put("companyName", "腾讯");
         map4.put("companyInfo", "国内著名社交游戏公司");
         map4.put("order", 6);
 
         Map map5 = Maps.newHashMap();
-        map5.put("companyid", 5);
+        map5.put("companyId", 5);
         map5.put("companyName", "谷歌");
         map5.put("companyInfo", "世界顶级科技公司");
         map5.put("order", 4);
 
         Map map6 = Maps.newHashMap();
-        map6.put("companyid", 6);
+        map6.put("companyId", 6);
         map6.put("companyName", "百度");
         map6.put("companyInfo", "国内知名搜索公司");
         map6.put("order", 5);
@@ -95,12 +100,13 @@ public class RestCompamyServiceImpl implements RestCompamyService {
         IndexRequest indexRequest6 = new IndexRequest("paic", "company", "6").source(map6);
         highLevelClient.index(indexRequest6, RequestOptions.DEFAULT);
         Map map7 = Maps.newHashMap();
-        map7.put("companyid", 7);
+        map7.put("companyId", 7);
         map7.put("companyName", "haolaiwu");
         map7.put("companyInfo", "haolaiwuhahahah");
         map7.put("order", 7);
         IndexRequest indexRequest7 = new IndexRequest("paic", "company", "7").source(map7);
         highLevelClient.index(indexRequest7, RequestOptions.DEFAULT);
+
     }
 
     @Override
@@ -148,6 +154,11 @@ public class RestCompamyServiceImpl implements RestCompamyService {
                     String highlightCompanyInfo = highlightField.fragments()[0].toString();
                     map.put("companyInfo", highlightCompanyInfo);
                     result.add(map);
+                    //替换高亮转为实体类
+//                    String collect = Arrays.stream(highlightField.fragments()).map(Text::string).collect(Collectors.joining("\n"));
+//                    CompanyInfo companyInfo = JSONObject.parseObject(searchHit.getSourceAsString(), CompanyInfo.class);
+//                    companyInfo.setCompanyInfo(collect);
+//                    log.info(String.valueOf(companyInfo));
                 }
             }
         } catch (IOException e) {
