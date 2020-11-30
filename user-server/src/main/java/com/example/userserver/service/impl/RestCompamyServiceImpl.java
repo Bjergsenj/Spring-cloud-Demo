@@ -1,7 +1,5 @@
 package com.example.userserver.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.example.userserver.model.CompanyInfo;
 import com.example.userserver.service.iface.RestCompamyService;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -11,7 +9,6 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -27,10 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * description: TODO
@@ -113,13 +108,17 @@ public class RestCompamyServiceImpl implements RestCompamyService {
     public Object searchByQuery() {
         SearchRequest searchRequest = new SearchRequest("paic");
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolBuilder = QueryBuilders.boolQuery();
         //companyInfo字段如果加上.keyword则为精确查询，否则为模糊查询
         MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("companyInfo", "电商");
+        //multiMatchQuery一个关键在在多个字段中查询,匹配度到达70%则显示出来 companyInfo权重设置为10
+//        MatchQueryBuilder matchQueryBuilder = QueryBuilders.multiMatchQuery("电商","companyInfo", "test","testName")
+//                .minimumShouldMatch("70%").field("companyInfo",10);
+
         //Term query会去倒排索引中寻找确切的term，它并不知道分词器的存在，这种查询适合keyword、numeric、date等明确值的
-        //        TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("companyInfo.keyword", "电商");
-        BoolQueryBuilder boolBuilder = QueryBuilders.boolQuery();
+//                TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("companyInfo.keyword", "电商");
         boolBuilder.must(matchQueryBuilder);
-        //        boolBuilder.must(termQueryBuilder);
+//                boolBuilder.filter(termQueryBuilder);
         sourceBuilder.query(boolBuilder);
         //分页
         sourceBuilder.from(0);
@@ -128,6 +127,8 @@ public class RestCompamyServiceImpl implements RestCompamyService {
         //      排序
         FieldSortBuilder fsb = SortBuilders.fieldSort("order");
         fsb.order(SortOrder.DESC);
+//        sourceBuilder.from( (page-1)*size );
+//        sourceBuilder.size(size);
         sourceBuilder.sort(fsb);
         //must搜索打分
         sourceBuilder.sort(new ScoreSortBuilder().order(SortOrder.DESC));
